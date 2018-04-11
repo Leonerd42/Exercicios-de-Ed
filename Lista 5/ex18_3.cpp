@@ -8,6 +8,11 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <windows.h>
+
+void gotoxy(int x, int y){
+     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),(COORD){x-1,y-1});
+}
 
 typedef struct {
 	int hora; 
@@ -114,6 +119,31 @@ void mostra_fila(def_fila fila){
 	}
 }
 
+void printa_caixas(No cx1,int temp1){
+	
+	system("cls"); 
+	
+	printf("\n\n--------- CAIXA 1 --------"); 
+	//printa_no()
+	printf("\nNumero do cliente: "); 
+	printf("\nHora do cliente: "); 
+	printf("\nTransação do cliente: "); 
+	printf("\nTempo de transação do cliente: %d",temp1); 
+	
+	if(cx1 != NULL){
+		gotoxy(30,4); 
+		printf("%d",cx1->numero); 
+		gotoxy(30,5); 
+		printf("%d",cx1->time.hora); 
+		gotoxy(35,5); 
+		printf("%d",cx1->time.min); 
+		gotoxy(30,6); 
+		printf("%d",cx1->trans); 
+		
+	}else printf("\nCaixa vazio!"); 	
+	
+}
+
 int main(){
 
 	setlocale(LC_ALL,"Portuguese");
@@ -121,10 +151,55 @@ int main(){
 	
 	def_fila banco; 
 	No aux; 
-	No cx1; 
+	No cx1, cx2, cx3; 
+	cx1 = cx2 = cx3 = NULL; 
 	int temp1 = 0; 
 	banco.clientes = NULL;
+	int quantidade = 0; 
+	long segundos = 1; 
+	int caixa1 = 1; 
 	
+	int flag = 0; 
+	
+	while(!flag){
+		
+		_sleep(500);
+		printa_caixas(cx1,temp1); 
+		
+		if(segundos % 10 == 0){
+			quantidade++; 
+			enfileira(&banco,quantidade,segundos*2,segundos);
+			//printf("\nUm cliente enfileirado!!!!"); 
+			
+		}
+		
+		
+		if(caixa1){			
+			if(desenfileira(&banco,&aux)){
+				cx1 = aux; 
+				temp1 = temp(cx1->trans); 
+				//printf("\nUm cliente entrou no caixa 1"); 
+				printa_no(cx1,temp1); 				
+				caixa1 = 0; 
+			}			
+		}
+		
+		if(!caixa1){
+			//printf("\nContando o tempo restante do cliente!"); 
+			//printf("\nTempo: %d",temp1); 
+			temp1--; 
+			if(temp1 == 0){
+				flag = 1; 
+				caixa1 = 1;
+			}
+		}		
+		segundos++; 
+	}
+	
+	printf("\nSai do loop"); 
+	printa_no(cx1,temp1); 
+	
+	/*
 	desenfileira(&banco,&aux);
 	
 	for(int i=0; i<10; i++){
@@ -140,7 +215,7 @@ int main(){
 	printf("\nCliente retirado: "); 
 	printa_no(cx1,temp1);
 	
-	mostra_fila(banco);
+	mostra_fila(banco);*/
 
 }
 
