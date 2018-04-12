@@ -103,41 +103,27 @@ int main(){
 	for(int i=0; i<100; i++){
 		aux = novo_veiculo(); 
 		enfileira(&inicio,&final,aux);
-		printf("\n%d %d",aux.tipo,aux.dest);
+		//printf("\n%d %d",aux.tipo,aux.dest);
 	}
 		
-	while(cont <10){
-		printf("\ntnc");
+	while(!vazia(inicio)){
+		//printf("\ntnc");
+		_sleep(1000);
+		if(cont % 3 == 0)	system("cls");
 		desenfileira(&inicio,&final,&aux);
-		printf("\t\t%d %d",aux.dest, aux.tipo);
+		//printf("\t\t%d %d",aux.dest, aux.tipo);
+		printf("\nVeiculo: %s Destino: %d",aux.veiculo,aux.dest);
 		if(aux.dest == (aux.tipo)-1){
 			printf("\nPolicial Bloqueou o caminho!"); 
-			printf("\n%s pegou a saida %d",aux.dest+1); 
+			printf("\n%s pegou a saida %d",aux.veiculo,aux.dest+1); 
+			printf("\n----\n");
 		}else{
 			printf("\nCaminho liberado!"); 
-			printf("\n%s seguiu o destino %d",aux.dest);
+			printf("\n%s seguiu o destino %d",aux.veiculo,aux.dest);
+			printf("\n----\n");
 		}
 		
 		cont++; 
 	}	
-	
-	/*do{
-		printf("\nDigite um tipo: ");
-		scanf("%d",&aux.tipo); 
-		printf("\nDigite um destino:"); 
-		scanf("%d",&aux.dest); 
-		enfileira(&inicio,&final,aux);
-		x++; 
-		
-	}while(x != 3); 
-	
-	imprime(inicio); 
-	
-	while(desenfileira(&inicio,&final,&aux)){
-		printf("\nTipo: %d",aux.tipo); 
-      	printf("\nVeiculo: %s",aux.veiculo); 
-      	printf("\nDestino: %d",aux.dest);
-      	printf("\n-----\n"); 	
-	}*/
 }
 
